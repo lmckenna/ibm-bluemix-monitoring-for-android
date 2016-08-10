@@ -1,0 +1,48 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion "23.0.3"
+
+    defaultConfig {
+        applicationId "com.ibm.apm.bamforandroidsample"
+        minSdkVersion 15
+        targetSdkVersion 23
+        versionCode 1
+        versionName "1.0.0"
+
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    packagingOptions {
+        pickFirst  'META-INF/notice.txt'
+        pickFirst  'META-INF/spring.handlers'
+        pickFirst  'META-INF/spring.schemas'
+        pickFirst  'META-INF/spring.tooling'
+        pickFirst  'META-INF/web-fragment.xml'
+        pickFirst  'META-INF/LICENSE.txt'
+        pickFirst  'META-INF/ASL2.0'
+        pickFirst  'META-INF/services/javax.servlet.ServletContainerInitializer'
+    }
+}
+
+
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.android.support:appcompat-v7:23.4.0'
+    compile 'com.android.support:design:23.4.0'
+    compile 'com.github.stephen-kruger:cloudfoundry-liteclient-lib:1f41fc6551816328b83191928c946c506ecdbc5d'
+    compile 'com.android.support:cardview-v7:23.0.+'
+    compile 'com.android.support:recyclerview-v7:23.0.+'
+}
+
+repositories {
+    maven { url "https://jitpack.io" }
+}
+

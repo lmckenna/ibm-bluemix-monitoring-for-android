@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+    Copyright 2016 IBM Corp
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+
+<resources>
+    <string name="app_name">IBM BAM for Android</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">User or password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."
+    </string>
+    <string name="region_uk">UK</string>
+    <string name="region_sydney">Sydney</string>
+    <string name="region_us_south">US South</string>
+    <string name="region_SVT">SVT (IBM internal)</string>
+    <string name="empty_apps_list">No applications in this region</string>
+    <string name="status_running">Online</string>
+    <string name="state_updating">Updating</string>
+    <string name="state_stopped">Offline</string>
+    <string name="login_successful">Login Successful</string>
+    <string name="logging_in">Logging in</string>
+    <string name="getting_application_list">Getting Application List</string>
+    <string name="synthetic_test_results">Synthetic Test Results</string>
+    <string name="success">Success</string>
+    <string name="failed">Failed</string>
+    <string name="response_time_s">LAST RESPONSE TIME (s)</string>
+    <string name="getting_test_results">Getting Synthetic Test Results</string>
+    <string name="synthetic_tests_path">/1.0/synthetic/synthetic_tests</string>
+    <string name="aar_url">/1.0/transaction/application_activity_records</string>
+    <string name="spref_oa2token">oa2token</string>
+    <string name="spref_oa2apiurl">oa2apiurl</string>
+</resources>

@@ -1,0 +1,74 @@
+/*
+ * Copyright 2016 IBM Corp
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package com.ibm.apm.bamforandroidsample;
+
+import android.app.Activity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import java.util.ArrayList;
+
+public class CustomSynthTestListAdapter extends ArrayAdapter<String> {
+
+    private final Activity context;
+
+    private final ArrayList<Integer> weborapiid;
+    private final ArrayList<String> testname;
+    private final ArrayList<Integer> statusimgid;
+    private final ArrayList<String> authortext;
+    private final ArrayList<String> testurltext;
+    private final ArrayList<Double> responsetimes;
+
+    public CustomSynthTestListAdapter(Activity context, ArrayList weborapiid, ArrayList testname,
+                                      ArrayList statusimgid, ArrayList authortext,
+                                      ArrayList testurltext, ArrayList responsetimes) {
+        super(context, R.layout.synth_test_custom, testname);
+
+        this.context = context;
+        this.weborapiid = weborapiid;
+        this.testname = testname;
+        this.statusimgid = statusimgid;
+        this.authortext = authortext;
+        this.testurltext = testurltext;
+        this.responsetimes = responsetimes;
+    }
+
+    public View getView(int position, View view, ViewGroup parent) {
+        LayoutInflater inflater = context.getLayoutInflater();
+        View rowView = inflater.inflate(R.layout.synth_test_custom, null, true);
+
+        TextView testName = (TextView) rowView.findViewById(R.id.SynthTestName);
+        ImageView webOrAPI = (ImageView) rowView.findViewById(R.id.weborapi);
+        ImageView statusImageView = (ImageView) rowView.findViewById(R.id.synthGoodOrFailed);
+        TextView authorText = (TextView) rowView.findViewById(R.id.SynthTestAuthor);
+        TextView testurlText = (TextView) rowView.findViewById(R.id.SynthTestURL);
+        TextView responseTimeText = (TextView) rowView.findViewById(R.id.ResponseTimeValue);
+
+        testName.setText(testname.get(position));
+        webOrAPI.setImageResource(weborapiid.get(position));
+        statusImageView.setImageResource(statusimgid.get(position));
+        authorText.setText(authortext.get(position));
+        testurlText.setText(testurltext.get(position));
+        responseTimeText.setText(responsetimes.get(position).toString());
+
+        return rowView;
+    }
+}

@@ -1,4 +1,4 @@
-# IBM BAM for Android - A Sample App
+# IBM BAM for Android™ - A Sample App
 
 This is a basic Android app meant as a starting project to build on. It currently utilizes private APIs to retrieve data used in the "Monitoring" tab of IBM Bluemix applications.
 
@@ -42,3 +42,7 @@ best results)
 ## License
 
 This project is licensed under the Apache v2 License - see the [LICENSE.txt](LICENSE.txt) file for details
+
+## Attribution
+
+Android is a trademark of Google Inc.

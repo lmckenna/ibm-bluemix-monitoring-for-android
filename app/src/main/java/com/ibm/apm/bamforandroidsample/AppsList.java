@@ -18,8 +18,8 @@ package com.ibm.apm.bamforandroidsample;
 
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -37,7 +37,6 @@ import java.util.ArrayList;
 public class AppsList extends AppCompatActivity {
 
     private AppsListTask mAuthTask = null;
-    private Toast mToast;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,25 +48,16 @@ public class AppsList extends AppCompatActivity {
     }
 
     private void getAppsList() {
+        Toast tToast;
         if (mAuthTask != null) {
             return;
         }
 
-        mToast = Toast.makeText(getApplicationContext(), R.string.getting_application_list, Toast.LENGTH_LONG);
-        mToast.show();
+        tToast = Toast.makeText(getApplicationContext(), R.string.getting_application_list, Toast.LENGTH_LONG);
+        tToast.show();
 
-        boolean cancel = false;
-        View focusView = null;
-
-        if (cancel) {
-            // something went wrong
-            focusView.requestFocus();
-        } else {
-            // Show a progress spinner, and kick off a background task to
-            // perform the app list retrieval
-            mAuthTask = new AppsListTask(this);
-            mAuthTask.execute((Void) null);
-        }
+        mAuthTask = new AppsListTask(this);
+        mAuthTask.execute((Void) null);
     }
 
     public class AppsListTask extends AsyncTask<Void, Void, Boolean> {

@@ -99,7 +99,7 @@ public class CfcSession extends Application {
         mCfc.logout();
     }
 
-    public ArrayList listApps() throws CloudFoundryException {
+    public ArrayList<CloudApplication> listApps() throws CloudFoundryException {
         ArrayList listOfApps = new ArrayList();
         try {
             List<CloudApplication> myList = mCfc.getApplications();

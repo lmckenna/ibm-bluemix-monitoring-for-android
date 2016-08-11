@@ -16,15 +16,18 @@
 
 package com.ibm.apm.bamforandroidsample;
 
+import android.content.DialogInterface;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.os.Looper;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Base64;
 import android.util.JsonReader;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.util.Base64;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -154,7 +157,8 @@ public class TestResultsForAnApp extends AppCompatActivity {
 
 
                 List<TestDetails> ltestDetails;
-                String urlString = getString(R.string.apiuri) + getString(R.string.synthetic_tests_path);
+                String urlString = getString(R.string.apiuri) + getString(R.string.synthetic_tests_path)
+                        + "?applicationID=" + mAppGUID; // need to filter on applicationID
                 URL url = new URL(urlString);
                 HttpsURLConnection urlConnection = (HttpsURLConnection) url.openConnection();
 
@@ -213,6 +217,31 @@ public class TestResultsForAnApp extends AppCompatActivity {
 
                 } catch (IOException e) {
                     e.printStackTrace();
+                    final String eStr = e.toString();
+
+                    new Thread()
+                    {
+                        @Override
+                        public void run()
+                        {
+                            Looper.prepare();
+
+                            new AlertDialog.Builder(mActivity)
+                                    .setTitle("Connection Error")
+                                    .setMessage("Cannot connect to API proxy\r\n\r\nDetail: You probably haven't modified api_endpoints_required.xml" + "\r\n\r\n" + eStr.toString())
+                                    .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            // do nothing
+                                        }
+                                    })
+                                    .setIcon(android.R.drawable.ic_dialog_alert)
+                                    .show();
+
+                            Looper.loop();
+                        }
+                    }.start();
+
+
                 } finally {
                     urlConnection.disconnect();
                 }

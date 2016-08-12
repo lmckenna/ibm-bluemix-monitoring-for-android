@@ -30,36 +30,21 @@ import java.util.ArrayList;
 
 public class CustomAppListAdapter extends ArrayAdapter<String> {
 
-    private final Activity context;
+    private final Activity mContext;
 
-    private final ArrayList<String> appname;
-    private final ArrayList<Integer> appimgid;
-    private final ArrayList<Integer> stateimgid;
-    private final ArrayList<String> statetext;
-    private final ArrayList<String> appdesc;
-    private final ArrayList<String> spaceguids;
-    private final ArrayList<String> appguids;
-    private final AppsList appslistthis;
+    private ArrayList<Application> mAppListArray = new ArrayList<>();
+    private final AppsList mAppsListThis;
 
-    public CustomAppListAdapter(Activity context, ArrayList appname, ArrayList appimgid,
-                                ArrayList stateimgid, ArrayList statetext,
-                                ArrayList appdescriptions, ArrayList spaceguids,
-                                ArrayList appguids, AppsList appslist) {
-        super(context, R.layout.app_list_custom_card, appname);
+    public CustomAppListAdapter(Activity context, ArrayList<Application> appsListArray, AppsList appslist, ArrayList<String> appNamesArray) {
+        super(context, R.layout.app_list_custom_card, appNamesArray);
 
-        this.context = context;
-        this.appname = appname;
-        this.appimgid = appimgid;
-        this.stateimgid = stateimgid;
-        this.statetext = statetext;
-        this.appdesc = appdescriptions;
-        this.spaceguids = spaceguids;
-        this.appguids = appguids;
-        this.appslistthis = appslist;
+        mContext = context;
+        mAppListArray = appsListArray;
+        mAppsListThis = appslist;
     }
 
     public View getView(int position, View view, ViewGroup parent) {
-        LayoutInflater inflater = context.getLayoutInflater();
+        LayoutInflater inflater = mContext.getLayoutInflater();
         View rowView = inflater.inflate(R.layout.app_list_custom_card, null, true);
 
         TextView appName = (TextView) rowView.findViewById(R.id.Appname);
@@ -68,28 +53,29 @@ public class CustomAppListAdapter extends ArrayAdapter<String> {
         TextView stateText = (TextView) rowView.findViewById(R.id.stateText);
         TextView descText = (TextView) rowView.findViewById(R.id.Appdesc);
 
-        descText.setText(appdesc.get(position));
-        appName.setText(appname.get(position));
-        appImageView.setImageResource(appimgid.get(position));
-        stateImageView.setImageResource(stateimgid.get(position));
-        stateText.setText(statetext.get(position));
+        if (!mAppListArray.isEmpty()) {
+            descText.setText(mAppListArray.get(position).mDescription);
+            appName.setText(mAppListArray.get(position).mName);
+            appImageView.setImageResource(mAppListArray.get(position).mImgId);
+            stateImageView.setImageResource(mAppListArray.get(position).mStateImgId);
+            stateText.setText(mAppListArray.get(position).mStateText);
 
-        Button onClickMonitoringButton = (Button) rowView.findViewById(R.id.monitoringResultsButton);
-        onClickMonitoringButton.setTag(position);
-        onClickMonitoringButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                    Integer position=(Integer) v.getTag();
-                    String selectedItem = appname.get(+position).toString();
-                    String spaceguid = spaceguids.get(+position).toString();
-                    String appguid = appguids.get(+position).toString();
-                    //Toast.makeText(getApplicationContext(), selectedItem, Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(appslistthis, TestResultsForAnApp.class);
+            Button onClickMonitoringButton = (Button) rowView.findViewById(R.id.monitoringResultsButton);
+            onClickMonitoringButton.setTag(position);
+            onClickMonitoringButton.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    Integer position = (Integer) v.getTag();
+                    String selectedItem = mAppListArray.get(+position).mName;
+                    String spaceguid = mAppListArray.get(+position).mSpaceGuid;
+                    String appguid = mAppListArray.get(+position).mAppGuid;
+                    Intent intent = new Intent(mAppsListThis, TestResultsForAnApp.class);
                     intent.putExtra("app_name", selectedItem);
                     intent.putExtra("space_guid", spaceguid);
                     intent.putExtra("app_guid", appguid);
-                    appslistthis.startActivity(intent);
-            }
-        });
+                    mAppsListThis.startActivity(intent);
+                }
+            });
+        }
 
         return rowView;
     }

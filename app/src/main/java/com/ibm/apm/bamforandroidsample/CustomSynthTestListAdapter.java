@@ -24,35 +24,25 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 
 public class CustomSynthTestListAdapter extends ArrayAdapter<String> {
 
-    private final Activity context;
+    private final Activity mContext;
 
-    private final ArrayList<Integer> weborapiid;
-    private final ArrayList<String> testname;
-    private final ArrayList<Integer> statusimgid;
-    private final ArrayList<String> authortext;
-    private final ArrayList<String> testurltext;
-    private final ArrayList<Double> responsetimes;
+    ArrayList<SyntheticTest> mTestList;
 
-    public CustomSynthTestListAdapter(Activity context, ArrayList weborapiid, ArrayList testname,
-                                      ArrayList statusimgid, ArrayList authortext,
-                                      ArrayList testurltext, ArrayList responsetimes) {
-        super(context, R.layout.synth_test_custom, testname);
+    public CustomSynthTestListAdapter(Activity context, ArrayList testList, ArrayList testNames) {
+        super(context, R.layout.synth_test_custom, testNames);
 
-        this.context = context;
-        this.weborapiid = weborapiid;
-        this.testname = testname;
-        this.statusimgid = statusimgid;
-        this.authortext = authortext;
-        this.testurltext = testurltext;
-        this.responsetimes = responsetimes;
+        mContext = context;
+        mTestList = testList;
     }
 
     public View getView(int position, View view, ViewGroup parent) {
-        LayoutInflater inflater = context.getLayoutInflater();
+        LayoutInflater inflater = mContext.getLayoutInflater();
         View rowView = inflater.inflate(R.layout.synth_test_custom, null, true);
 
         TextView testName = (TextView) rowView.findViewById(R.id.SynthTestName);
@@ -62,12 +52,13 @@ public class CustomSynthTestListAdapter extends ArrayAdapter<String> {
         TextView testurlText = (TextView) rowView.findViewById(R.id.SynthTestURL);
         TextView responseTimeText = (TextView) rowView.findViewById(R.id.ResponseTimeValue);
 
-        testName.setText(testname.get(position));
-        webOrAPI.setImageResource(weborapiid.get(position));
-        statusImageView.setImageResource(statusimgid.get(position));
-        authorText.setText(authortext.get(position));
-        testurlText.setText(testurltext.get(position));
-        responseTimeText.setText(responsetimes.get(position).toString());
+        testName.setText(mTestList.get(position).mName);
+        webOrAPI.setImageResource(mTestList.get(position).mWebOrAapiId);
+        statusImageView.setImageResource(mTestList.get(position).mStatusImgId);
+        authorText.setText(mTestList.get(position).mAuthorText);
+        testurlText.setText(mTestList.get(position).mUrlText);
+        NumberFormat formatter = new DecimalFormat("#0.000");
+        responseTimeText.setText(formatter.format(mTestList.get(position).mResponseTime));
 
         return rowView;
     }

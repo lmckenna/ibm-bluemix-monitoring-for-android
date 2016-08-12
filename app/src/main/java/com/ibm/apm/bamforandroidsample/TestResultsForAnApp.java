@@ -94,12 +94,7 @@ public class TestResultsForAnApp extends AppCompatActivity {
     public class TestResultsTask extends AsyncTask<Void, Void, Boolean> {
 
         private TestResultsForAnApp mActivity;
-        ArrayList listOfSynthTestNames = new ArrayList();
-        ArrayList listOfStatusImageIDs = new ArrayList();
-        ArrayList listOfWebOrAPIImageIDs = new ArrayList();
-        ArrayList listOfAuthorTexts = new ArrayList();
-        ArrayList listOfTestURLs = new ArrayList();
-        ArrayList listOfResponseTimes = new ArrayList();
+        ArrayList<SyntheticTest> mTestsArray = new ArrayList<>();
 
         TestResultsTask(TestResultsForAnApp activity) {
             mActivity = activity;
@@ -191,21 +186,24 @@ public class TestResultsForAnApp extends AppCompatActivity {
                             ltestResults = readTestResultsJSON(testResultsIn);
 
                             for (TestResults testResults : ltestResults) {
-                                listOfSynthTestNames.add(testDetails.mTestName);
-                                listOfAuthorTexts.add(testDetails.mAuthorName);
-                                listOfResponseTimes.add(testResults.mLastResponseTime);
+                                SyntheticTest test = new SyntheticTest();
 
-                                listOfTestURLs.add(testDetails.mTestURL);
+                                test.mName = testDetails.mTestName;
+                                test.mAuthorText = testDetails.mAuthorName;
+                                test.mResponseTime = testResults.mLastResponseTime;
+
+                                test.mUrlText = testDetails.mTestURL;
                                 if (testDetails.mSyntheticType.equals("SeleniumLoad")) {
-                                    listOfWebOrAPIImageIDs.add(R.drawable.web);
+                                    test.mWebOrAapiId = R.drawable.web;
                                 } else {
-                                    listOfWebOrAPIImageIDs.add(R.drawable.api);
+                                    test.mWebOrAapiId = R.drawable.api;
                                 }
                                 if (testResults.mStatus.equals("Good")) {
-                                    listOfStatusImageIDs.add(R.drawable.greentick);
+                                    test.mStatusImgId = R.drawable.greentick;
                                 } else {
-                                    listOfStatusImageIDs.add(R.drawable.redcross);
+                                    test.mStatusImgId = R.drawable.redcross;
                                 }
+                                mTestsArray.add(test);
                                 break; // should only be 1 as set limit to 1
                             }
                         } catch (IOException e) {
@@ -265,8 +263,13 @@ public class TestResultsForAnApp extends AppCompatActivity {
 
             }
             ListView listView;
-            CustomSynthTestListAdapter adapter = new CustomSynthTestListAdapter(mActivity, listOfWebOrAPIImageIDs,
-                    listOfSynthTestNames, listOfStatusImageIDs, listOfAuthorTexts, listOfTestURLs, listOfResponseTimes);
+
+            ArrayList<String> testNamesArray = new ArrayList<>();
+            for (SyntheticTest test : mTestsArray) {
+                testNamesArray.add(test.mName);
+            }
+
+            CustomSynthTestListAdapter adapter = new CustomSynthTestListAdapter(mActivity, mTestsArray, testNamesArray);
             listView = (ListView) findViewById(R.id.synthTestListView);
             listView.setAdapter(adapter);
 

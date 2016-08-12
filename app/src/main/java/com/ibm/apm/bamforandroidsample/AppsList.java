@@ -64,13 +64,7 @@ public class AppsList extends AppCompatActivity {
 
         private ArrayList<CloudApplication> mListOfApps;
         private AppsList mActivity;
-        ArrayList listOfAppNames = new ArrayList();
-        ArrayList listOfStateImages = new ArrayList();
-        ArrayList listOfIcons = new ArrayList();
-        ArrayList listOfStateTexts = new ArrayList();
-        ArrayList listOfSpaceGUIDs = new ArrayList();
-        ArrayList listOfAppGUIDs = new ArrayList();
-        ArrayList listOfAppDescriptions = new ArrayList();
+        ArrayList<Application> mAppListArray = new ArrayList<>();
 
         AppsListTask(AppsList activity) {
             mActivity = activity;
@@ -83,9 +77,10 @@ public class AppsList extends AppCompatActivity {
 
                 // list the apps in the view
                 for (CloudApplication application : mListOfApps) {
-                    //listOfApps.add(application.getName());
-                    listOfAppNames.add(application.getName());
+                    Application currentApp = new Application();
                     JSONObject entity;
+
+                    currentApp.mName = application.getName();
 
                     try {
                         // so I can get the buildpack used
@@ -94,45 +89,45 @@ public class AppsList extends AppCompatActivity {
                         entity = (JSONObject) f.get(application);
 
                         String buildpackstring = entity.getString(CloudApplication.EntityField.detected_buildpack.name());
-                        listOfSpaceGUIDs.add(entity.getString(CloudApplication.EntityField.space_guid.name()));
-                        listOfAppDescriptions.add(entity.getString(CloudApplication.EntityField.package_state.name()));
+                        currentApp.mSpaceGuid = entity.getString(CloudApplication.EntityField.space_guid.name());
+                        currentApp.mDescription = entity.getString(CloudApplication.EntityField.package_state.name());
 
                         String[] routes_url = entity.getString(CloudApplication.EntityField.routes_url.name()).split("/");
                         if (routes_url.length >= 4) {
-                            listOfAppGUIDs.add(routes_url[3]);
+                            currentApp.mAppGuid = routes_url[3];
                         }
                         else {
-                            listOfAppGUIDs.add("");
+                            currentApp.mAppGuid = "";
                         }
 
                         if (buildpackstring == "null") {
                             buildpackstring = entity.getString(CloudApplication.EntityField.buildpack.name());
                         }
                         if (application.getState() == CloudApplication.AppState.STARTED) {
-                            listOfStateImages.add(R.drawable.playbutton);
-                            listOfStateTexts.add(getString(R.string.status_running));
+                            currentApp.mStateImgId = R.drawable.playbutton;
+                            currentApp.mStateText = getString(R.string.status_running);
 
                             if (buildpackstring.indexOf("ode") != -1) {
-                                listOfIcons.add(R.drawable.nodejs);
+                                currentApp.mImgId = R.drawable.nodejs;
                             } else if (buildpackstring.indexOf("Liberty") != -1) {
-                                listOfIcons.add(R.drawable.liberty);
+                                currentApp.mImgId = R.drawable.liberty;
                             } else if (buildpackstring.indexOf("tatic") != -1) {
-                                listOfIcons.add(R.drawable.html);
+                                currentApp.mImgId = R.drawable.html;
                             } else {// generic
-                                listOfIcons.add(R.drawable.genericbuildpack);
+                                currentApp.mImgId = R.drawable.genericbuildpack;
                             }
                         } else { // STOPPED
-                            listOfStateImages.add(R.drawable.stopbutton);
-                            listOfStateTexts.add(getString(R.string.state_stopped));
+                            currentApp.mStateImgId = R.drawable.stopbutton;
+                            currentApp.mStateText = getString(R.string.state_stopped);
 
                             if (buildpackstring.indexOf("ode") != -1) {
-                                listOfIcons.add(R.drawable.nodejsgrey);
+                                currentApp.mImgId = R.drawable.nodejsgrey;
                             } else if (buildpackstring.indexOf("Liberty") != -1) {
-                                listOfIcons.add(R.drawable.libertygrey);
+                                currentApp.mImgId = R.drawable.libertygrey;
                             } else if (buildpackstring.indexOf("tatic") != -1) {
-                                listOfIcons.add(R.drawable.html);
+                                currentApp.mImgId = R.drawable.html;
                             } else {// generic
-                                listOfIcons.add(R.drawable.genericbuildpack);
+                                currentApp.mImgId = R.drawable.genericbuildpack;
                             }
                         }
                         Log.i("AppsListLM: %s%n", application.getName());
@@ -145,9 +140,9 @@ public class AppsList extends AppCompatActivity {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
+
+                    mAppListArray.add(currentApp);
                 }
-
-
             } catch (CloudFoundryException e) {
                 e.printStackTrace();
             }
@@ -158,19 +153,14 @@ public class AppsList extends AppCompatActivity {
         protected void onPostExecute(final Boolean success) {
             mAuthTask = null;
 
-            if (success) {
-                //finish();
-            } else {
-                // just empty list of apps, say no apps
-                listOfAppNames.add(getString(R.string.empty_apps_list));
-            }
-            //ArrayAdapter<String> adapter = new ArrayAdapter<>(mActivity,
-            //        R.layout.app_list_custom, R.id.Appname, listOfAppNames);
-            //listView.setAdapter(adapter);
-
             ListView listView;
-            CustomAppListAdapter adapter = new CustomAppListAdapter(mActivity, listOfAppNames,
-                    listOfIcons, listOfStateImages, listOfStateTexts, listOfAppDescriptions, listOfSpaceGUIDs, listOfAppGUIDs, AppsList.this );
+
+            ArrayList<String> appNamesArray = new ArrayList<>();
+            for (Application application : mAppListArray) {
+                appNamesArray.add(application.mName);
+            }
+
+            CustomAppListAdapter adapter = new CustomAppListAdapter(mActivity, mAppListArray, AppsList.this, appNamesArray);
             listView = (ListView)findViewById(R.id.appListView);
             listView.setAdapter(adapter);
 
@@ -178,10 +168,9 @@ public class AppsList extends AppCompatActivity {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view,
                                         int position, long id) {
-                    String selectedItem = listOfAppNames.get(+position).toString();
-                    String spaceguid = listOfSpaceGUIDs.get(+position).toString();
-                    String appguid = listOfAppGUIDs.get(+position).toString();
-                    //Toast.makeText(getApplicationContext(), selectedItem, Toast.LENGTH_SHORT).show();
+                    String selectedItem = mAppListArray.get(+position).mName;
+                    String spaceguid = mAppListArray.get(+position).mSpaceGuid;
+                    String appguid = mAppListArray.get(+position).mAppGuid;
                     Intent intent = new Intent(AppsList.this, TestResultsForAnApp.class);
                     intent.putExtra("app_name", selectedItem);
                     intent.putExtra("space_guid", spaceguid);

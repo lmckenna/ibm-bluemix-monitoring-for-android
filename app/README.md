@@ -2,6 +2,8 @@
 
 This is a basic Android app meant as a starting project to build on. It currently utilizes private APIs to retrieve data used in the "Monitoring" tab of IBM Bluemix applications.
 
+For now, to get the monitoring test results you will need to know the IP, username and password for the back end HA Proxy API interface, and specify them in the api_endpoints_required.xml value file. This will likely only be available to IBMers.
+
 This source code and resulting app is not supported or endorsed by IBM, it is intended as sample code only. See LICENSE.txt.
 
 ## Screenshots

@@ -1,8 +1,14 @@
-# IBM BAM for Android™ - A Sample App
+# IBM Bluemix Monitoring for Android™: A Sample App
 
 This is a basic Android app meant as a starting project to build on. It currently utilizes private APIs to retrieve data used in the "Monitoring" tab of IBM Bluemix applications.
 
 This source code and resulting app is not supported or endorsed by IBM, it is intended as sample code only. See LICENSE.txt.
+
+## Screenshots
+
+![Login Page Screenshot](screenshots/LoginPage.png?raw=true "Login")
+![App List Screenshot](screenshots/LoginPage.png?raw=true "Application List")
+![Test List Screenshot](screenshots/LoginPage.png?raw=true "Test List")
 
 ## Getting Started
 

@@ -54,3 +54,7 @@ This project is licensed under the Apache v2 License - see the [LICENSE.txt](LIC
 ## Attribution
 
 Android is a trademark of Google Inc.
+
+## Video
+
+![Test List Screenshot](screenshots/animated.gif "Video")

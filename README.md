@@ -8,9 +8,9 @@ This source code and resulting app is not supported or endorsed by IBM, it is in
 
 ## Screenshots
 
-![Login Page Screenshot](app/screenshots/LoginPage.png?raw=true "Login")
-![App List Screenshot](app/screenshots/AppList.png?raw=true "Application List")
-![Test List Screenshot](app/screenshots/TestList.png?raw=true "Test List")
+![Login Page Screenshot](screenshots/LoginPage.png?raw=true "Login")
+![App List Screenshot](screenshots/AppList.png?raw=true "Application List")
+![Test List Screenshot](screenshots/TestList.png?raw=true "Test List")
 
 ## Getting Started
 
